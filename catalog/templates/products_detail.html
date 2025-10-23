@@ -7,7 +7,11 @@
         <div class="card mb-3 center" style="max-width: 1000px; min-height: 300px;">
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+              {% else %}
+                <img src="{% static 'img/default-product.jpg' %}" alt="Нет изображения">
+              {% endif %}
             </div>
             <div class="col-md-8">
               <div class="card-body">

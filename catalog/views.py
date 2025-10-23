@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-
+from django.views.generic.edit import CreateView
 from catalog.models import Contacts, Product
+from django.urls import reverse_lazy
 
 
 def home(request):
@@ -34,3 +35,10 @@ def products_list(request):
     products = Product.objects.all()
     context = {"products": products}
     return render(request, "products_list.html", context)
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ["name", "description", "category" ,"price", "image"]
+    template_name = "product_form.html"
+    success_url = reverse_lazy("catalog:home")

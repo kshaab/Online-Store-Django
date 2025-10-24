@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить статью{% endblock %}
+
+{% block content %}
+<h2>Удалить статью {{ blog_post.title }}?</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-secondary">Удалить</button>
+    <a href="/blog/" class="btn btn-danger">Отмена</a>
+</form>
+{% endblock %}

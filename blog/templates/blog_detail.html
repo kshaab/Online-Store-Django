@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        {% if blog_post.preview %}
+            <img src="{{ blog_post.preview.url }}" class="card-img-top" alt="{{ blog_post.title }}" style="object-fit: cover; max-height: 400px;">
+        {% else %}
+            <img src="{% static 'img/default-blog.jpg' %}" class="card-img-top" alt="Нет изображения" style="object-fit: cover; max-height: 400px;">
+        {% endif %}
+        <div class="card-body">
+            <h1 class="card-title mb-3 text-center">{{ blog_post.title }}</h1>
+            <p class="card-text fs-5" style="line-height: 1.6; text-align: justify;">
+                {{ blog_post.content }}
+            </p>
+            <p class="card-text mt-4 text-end text-muted">
+                <small>Опубликовано: {{ blog_post.created_at|date:"d.m.Y" }} | Просмотров: {{ blog_post.views }}</small>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

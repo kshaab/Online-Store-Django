@@ -41,7 +41,11 @@ class Product(models.Model):
         null=True,
     )
     created_at = models.DateField(
-        verbose_name="Дата создания", help_text="Введите дату создания продукта", blank=True, null=True
+        auto_now_add=True,
+        verbose_name="Дата создания",
+        help_text="Введите дату создания продукта",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateField(
         verbose_name="Дата последнего изменения",

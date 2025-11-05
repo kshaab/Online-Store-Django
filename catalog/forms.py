@@ -1,13 +1,35 @@
 from django import forms
 from catalog.models import Product
 from catalog.constants import FORBIDDEN_WORDS
-from django.core.exceptions import ValidationError
+
+class StyleFormMixin:
+    fields: dict[str, forms.Field]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["name"].widget.attrs.update({
+            "class": "form-control",
+            "placeholder": "Введите название продукта"
+        })
+        self.fields["description"].widget.attrs.update({
+            "class": "form-control",
+            "placeholder": "Введите описание продукта"
+        })
+        self.fields["category"].widget.attrs.update({
+            "class": "form-control"
+        })
+        self.fields["price"].widget.attrs.update({
+            "class": "form-control",
+            "placeholder": "Введите цену продукта"
+        })
+        self.fields["on_sale"].widget.attrs.update({
+            "class": "form-check-input"
+        })
 
 
-class ProductForm(forms.ModelForm):
+class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "description", "category", "price", "image"]
+        fields = ["name", "description", "category", "price", "image", "on_sale"]
 
     def clean_name(self):
         name = self.cleaned_data.get("name").lower()

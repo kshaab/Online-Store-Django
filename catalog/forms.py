@@ -1,6 +1,7 @@
 from django import forms
 from catalog.models import Product
 from catalog.constants import FORBIDDEN_WORDS
+from django.core.exceptions import ValidationError
 
 
 class ProductForm(forms.ModelForm):
@@ -21,6 +22,12 @@ class ProductForm(forms.ModelForm):
             if word in description:
                 raise forms.ValidationError("Описание содержит запрещенное слово")
         return description
+
+    def clean_price(self):
+        price = self.cleaned_data.get("price")
+        if price < 0:
+            raise forms.ValidationError("Цена не может быть отрицательной")
+        return price
 
 
 

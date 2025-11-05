@@ -4,9 +4,7 @@ from django.db import models
 class BlogPost(models.Model):
     title = models.CharField(max_length=100, verbose_name="Заголовок")
     content = models.TextField(verbose_name="Содержимое")
-    preview = models.ImageField(
-        upload_to="preview/", verbose_name="Превью", blank=True, null=True
-    )
+    preview = models.ImageField(upload_to="preview/", verbose_name="Превью", blank=True, null=True)
     created_at = models.DateField(
         auto_now_add=True,
         verbose_name="Дата создания",

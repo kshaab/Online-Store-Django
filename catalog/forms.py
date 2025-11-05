@@ -1,29 +1,22 @@
 from django import forms
-from catalog.models import Product
+from django.core.exceptions import ValidationError
+
 from catalog.constants import FORBIDDEN_WORDS
+from catalog.models import Product
+
 
 class StyleFormMixin:
     fields: dict[str, forms.Field]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["name"].widget.attrs.update({
-            "class": "form-control",
-            "placeholder": "Введите название продукта"
-        })
-        self.fields["description"].widget.attrs.update({
-            "class": "form-control",
-            "placeholder": "Введите описание продукта"
-        })
-        self.fields["category"].widget.attrs.update({
-            "class": "form-control"
-        })
-        self.fields["price"].widget.attrs.update({
-            "class": "form-control",
-            "placeholder": "Введите цену продукта"
-        })
-        self.fields["on_sale"].widget.attrs.update({
-            "class": "form-check-input"
-        })
+        self.fields["name"].widget.attrs.update({"class": "form-control", "placeholder": "Введите название продукта"})
+        self.fields["description"].widget.attrs.update(
+            {"class": "form-control", "placeholder": "Введите описание продукта"}
+        )
+        self.fields["category"].widget.attrs.update({"class": "form-control"})
+        self.fields["price"].widget.attrs.update({"class": "form-control", "placeholder": "Введите цену продукта"})
+        self.fields["on_sale"].widget.attrs.update({"class": "form-check-input"})
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
@@ -47,10 +40,16 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
     def clean_price(self):
         price = self.cleaned_data.get("price")
-        if price < 0:
+        if price is not None and price < 0:
             raise forms.ValidationError("Цена не может быть отрицательной")
         return price
 
-
-
-
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if image:
+            max_size = 5 * 1024 * 1024
+            if image.size > max_size:
+                raise forms.ValidationError("Размер файла не должен превышать 5MG")
+            valid_formats = ["image/jpeg", "image/png"]
+            if image.content_type not in valid_formats:
+                raise ValidationError("Поддерживаются только файлы JPEG и PNG")

@@ -5,8 +5,9 @@ from django.views import View
 from django.views.generic import DeleteView, DetailView, ListView, TemplateView, UpdateView
 from django.views.generic.edit import CreateView
 
-from catalog.models import Contacts, Product
 from catalog.forms import ProductForm
+from catalog.models import Contacts, Product
+
 
 class BaseTemplateView(TemplateView):
     template_name = "base.html"

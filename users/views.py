@@ -1,7 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from users.forms import UserRegisterForm
+from django.views.generic import CreateView, UpdateView
+from users.forms import UserRegisterForm, UserUpdateForm
 from users.models import User
 from django.conf import settings
 
@@ -24,5 +25,16 @@ class UserCreateView(CreateView):
             fail_silently=True,
         )
         return super().form_valid(form)
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = "profile_edit.html"
+    success_url = reverse_lazy("users:profile_edit")
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
 
 

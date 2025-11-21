@@ -41,7 +41,6 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
                     raise forms.ValidationError("Описание содержит запрещенное слово")
         return description
 
-
     def clean_image(self):
         image = self.cleaned_data.get("image")
         if image:

@@ -1,6 +1,7 @@
-from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.core.management.base import BaseCommand
+
 from blog.models import BlogPost
 
 
@@ -12,6 +13,4 @@ class Command(BaseCommand):
         can_change = Permission.objects.get(codename="change_blogpost", content_type=content_type)
         can_delete = Permission.objects.get(codename="delete_blogpost", content_type=content_type)
         group.permissions.add(can_add, can_change, can_delete)
-        self.stdout.write(self.style.SUCCESS(
-            "The group 'Контент-менеджер' was successfully created"
-        ))
+        self.stdout.write(self.style.SUCCESS("The group 'Контент-менеджер' was successfully created"))

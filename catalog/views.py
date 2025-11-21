@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import DeleteView, DetailView, ListView, TemplateView, UpdateView
@@ -99,4 +99,3 @@ class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request, pk):
         return self.post(request, pk)
-

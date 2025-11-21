@@ -1,22 +1,26 @@
 from typing import Optional
 
 from django.conf import settings
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.mail import send_mail
+from django.http import HttpRequest, HttpResponseForbidden
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponseForbidden, HttpRequest
+
 from blog.forms import BlogPostForm
 from blog.models import BlogPost
 
 
 class ContentManagerRequiredMixin(UserPassesTestMixin):
     request: Optional[HttpRequest]
+
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.groups.filter(name="Контент-менеджер").exists()
+
     def handle_no_permission(self):
         return HttpResponseForbidden("У вас нет прав для управления блог-постами.")
+
 
 class BlogPostCreateView(ContentManagerRequiredMixin, CreateView):
     model = BlogPost
@@ -37,7 +41,7 @@ class BlogPostListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_content_manager'] = self.request.user.groups.filter(name="Контент-менеджер").exists()
+        context["is_content_manager"] = self.request.user.groups.filter(name="Контент-менеджер").exists()
         return context
 
 

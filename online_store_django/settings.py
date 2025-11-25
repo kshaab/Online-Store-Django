@@ -110,7 +110,7 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = "catalog:home"
 LOGOUT_REDIRECT_URL = "catalog:home"
 
-CACHE_ENABLED = True
+CACHE_ENABLED = os.getenv("CACHE_ENABLED", False) == "True"
 if CACHE_ENABLED:
     CACHES = {
         "default": {
